@@ -11,26 +11,35 @@
 binary_tree_t *binary_trees_ancestor(const binary_tree_t *first,
 				     const binary_tree_t *second)
 {
-	if (first == NULL || second == NULL)
-		return (NULL);
+	binary_tree_t *node1 = (binary_tree_t *)first;
+	binary_tree_t *node2 = (binary_tree_t *)second;
+	int first_count = 0;
+	int second_count = 0;
 
-	if (first->parent == second)
-		return ((binary_tree_t *)second);
-
-	if (second->parent == first)
-		return ((binary_tree_t *)first);
-
-	if (first->parent == second->parent)
-		return ((binary_tree_t *)first->parent);
-
-	if (first->parent == second->parent->parent)
-		return ((binary_tree_t *)first->parent);
-
-	if (second->parent == first->parent->parent)
-		return ((binary_tree_t *)second->parent);
-
-	if (first->parent->parent == second->parent->parent)
-		return ((binary_tree_t *)first->parent->parent);
-	else
-		return (NULL);
+	while (first != NULL)
+	{
+		first = first->parent;
+		first_count++;
+	}
+	while (second != NULL)
+	{
+		second = second->parent;
+		second_count++;
+	}
+	while (first_count > second_count)
+	{
+		node1 = node1->parent;
+		first_count--;
+	}
+	while (second_count > first_count)
+	{
+		node2 = node2->parent;
+		second_count--;
+	}
+	while (node1 != node2)
+	{
+		node1 = node1->parent;
+		node2 = node2->parent;
+	}
+	return (node1);
 }
